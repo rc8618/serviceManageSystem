@@ -9,6 +9,11 @@ use Auth;
 
 class UserController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * View page for logged in user details which is mydetails
+     */
     public function index(Request $request)
     {
         $myDetails = User::where('id',Auth::user()->id)->first();
@@ -17,9 +22,14 @@ class UserController extends Controller
             [
                 'myDetails' => $myDetails,
                 'totalAddress' => $totalAddress,
-            ]); 
+            ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * For editdetail view page
+     */
     public function editView(Request $request)
     {
         $myDetail = User::where('id',Auth::user()->id)->first();
@@ -30,17 +40,26 @@ class UserController extends Controller
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * For update database value in user table
+     */
     public function store(Request $request)
     {
         $myDetail = User::where('id', '=', $request->id)->first();
-        $myDetail->name = $request->name; 
-        $myDetail->email = $request->email; 
+        $myDetail->name = $request->name;
+        $myDetail->email = $request->email;
         $myDetail->save();
 
         return redirect()->route('home')->with('msg',"Successfully updated your details.");
     }
 
-    //Form validation for parent
+    /**
+     * @param Request $request
+     * @return array
+     * For form validation of editdetail page
+     */
     public function validateForm(Request $request)
     {
         $messages = [
@@ -53,7 +72,7 @@ class UserController extends Controller
         $validateAtt = $request->validate([
             'name' => 'required|max:191',
             'email' => 'required|email|regex:^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$^|unique:address,email,' . $request->id,
-            
+
         ], $messages);
         return $validateAtt;
     }

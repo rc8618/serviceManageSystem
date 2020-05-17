@@ -10,14 +10,12 @@ use Auth;
 
 class AddressManageController extends Controller
 {
+    /**
+     * Listing funcrion for the Address Management
+     */
     public function index(Request $request)
     {
-        $sort = 'asc';
-        $field = 'id';
-        $iconclass = 'fa-caret-up';
-
         $viewAddress = Address::where('user_id', Auth::user()->id)->get();
-        // dd($viewAddress);
 
         $columns = [
             'index' => '#',
@@ -33,27 +31,35 @@ class AddressManageController extends Controller
                 'viewAddress' => $viewAddress,
                 'columns' => $columns,
                 'index' => $index,
-                'sort' => $sort,
-                'iconclass' => $iconclass,
-                'field' => $field,
             ]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * Function for the view page of add new address
+     */
     public function addView()
     {
         $country = Country::all();
         return view('address/addEdit')->with('country', $country);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * For add and edit database value of address
+     */
     public function store(Request $request)
     {
-        
+
         $this->validateForm($request);
-        
+
         if ($request->id) {
+            //For edit address
             $address = Address::where('id', '=', $request->id)->first();
             $msg = "Address updated Successfully.";
         } else {
+            //For new address
             $address = new Address;
             $msg = "Address added Successfully.";
         }
@@ -63,6 +69,8 @@ class AddressManageController extends Controller
         $address->street = $request->street;
         $address->phone_no = $request->phone_no;
         $address->country_id = $request->country_id;
+
+        //Encode data of checkbox in json for store in the database
         $address->services = json_encode($request->services);
         $address->save();
 
@@ -70,7 +78,11 @@ class AddressManageController extends Controller
 
     }
 
-    //Form validation for parent
+    /**
+     * @param Request $request
+     * @return array
+     * For form validation of add and edit address form
+     */
     public function validateForm(Request $request)
     {
         $messages = [
@@ -95,22 +107,36 @@ class AddressManageController extends Controller
             'phone_no' => 'required|numeric|digits:10',
             'country_id' => 'required|not_in:0',
             'services' => 'required|array|min:1',
-            
+
         ], $messages);
         return $validateAtt;
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * For edit view page
+     */
     public function editView(Request $request)
     {
         $addressDetail = Address::where('id', $request->id)->first();
+
+        //If id is not getting than display 404 page
         if (!isset($addressDetail)){
             return view('errors/404');
         }
+
+        //Decode data from json for services checkboxes
         $addressServices = json_decode($addressDetail->services);
         $country = Country::all();
         return view('address/addEdit')->with(['addressDetail' => $addressDetail, 'country' => $country, 'addressServices' => $addressServices]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * For delete particular address
+     */
     public function delete(Request $request)
     {
         $deleteAddress = Address::find($request->id)->delete();

@@ -22,6 +22,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
+    //Routes for the Address Management
     Route::group(['prefix' => 'address'], function () {
         Route::get('/index', 'AddressManageController@index')->name('addressIndex');
         Route::get('/add', 'AddressManageController@addView')->name('addAddressView');
@@ -30,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/delete/{id}', 'AddressManageController@delete')->name('deleteAddress');
     });
 
+    //Routes for the User Details
     Route::group(['prefix' => 'my'], function () {
         Route::get('/', 'UserController@index')->name('myDetails');
         Route::get('/edit', 'UserController@editView')->name('editMyDetails');
