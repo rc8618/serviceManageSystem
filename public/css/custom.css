@@ -1,0 +1,92 @@
+body {
+    background: #007bff;
+    background: linear-gradient(to right, #0062E6, #33AEFF);
+}
+.registercard {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 900;
+    color:black;
+}
+.inner {
+    height: 200px;
+    width: 200px;
+    background-color: whitesmoke;
+}
+
+.mytext {
+    font-size: 25px;
+    color: white;
+    margin-top: 10px;
+}
+
+.spantext {
+    text-align: center;
+}
+
+.addbtn {
+    float: right;
+    margin-top: 10px;
+}
+.error-msg {
+    color: red;
+}
+.margin-top-20-px {
+    margin-top: 20px;
+}
+.margin-top-100-px {
+    margin-top: 100px;
+}
+.float-right {
+    float: right;
+}
+.padding-left-50-px {
+    padding-left: 50px;;
+}
+
+@media (min-width: 992px) {
+    .animate {
+        animation-duration: 0.3s;
+        -webkit-animation-duration: 0.3s;
+        animation-fill-mode: both;
+        -webkit-animation-fill-mode: both;
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes slideIn {
+    0% {
+        -webkit-transform: transform;
+        -webkit-opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        -webkit-opacity: 1;
+    }
+    0% {
+        -webkit-transform: translateY(1rem);
+        -webkit-opacity: 0;
+    }
+}
+
+.slideIn {
+    -webkit-animation-name: slideIn;
+    animation-name: slideIn;
+}
+
+
